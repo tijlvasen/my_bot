@@ -6,7 +6,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.actions import TimerAction
+
 from launch_ros.actions import Node
 
 
@@ -25,6 +25,8 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'true'}.items()
     )
 
+    gazebo_params_file = os.path.join(get_package_share_directory(package_name),'config','gazebo_params.yaml')
+
     # Include the Gazebo launch file, provided by the gazebo_ros package
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
@@ -37,15 +39,10 @@ def generate_launch_description():
                                    '-entity', 'my_bot'],
                         output='screen')
 
-    diff_drive_spawner = TimerAction(
-    period=5.0,
-        actions=[
-            Node(
-            package="controller_manager",
-            executable="spawner.py",
-            arguments=["diff_cont"],
-            )
-        ]
+    diff_drive_spawner = Node(
+        package="controller_manager",
+        executable="spawner.py",
+        arguments=["diff_cont"],
     )
 
     joint_broad_spawner = Node(
