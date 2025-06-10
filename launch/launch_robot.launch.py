@@ -32,7 +32,7 @@ def generate_launch_description():
 
     controller_params_file = os.path.join(get_package_share_directory(package_name),'config','my_controllers.yaml')
 
-   controller_manager = Node(
+    controller_manager = Node(
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[{'robot_description': robot_description},
@@ -65,7 +65,7 @@ def generate_launch_description():
             target_action=controller_manager,
             on_start=[joint_broad_spawner],
         )
-
+    )
 
     # Launch them all!
     return LaunchDescription([
